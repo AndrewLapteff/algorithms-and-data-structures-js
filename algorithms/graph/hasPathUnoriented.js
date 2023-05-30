@@ -16,6 +16,9 @@ const buildGraph = (edges) => {
   return graph
 }
 
+// Time: O(e)
+// Space: O(v)
+
 // Метод прохода по графу
 const hasPathDFSUndirected = (graph, current, target, visited) => {
   if (current === target) return true

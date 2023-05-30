@@ -4,8 +4,8 @@ const Queue = require("../../data_structures/queue")
 // тоді їх сусідів і так далі (використовуємо Queue)
 
 // Worst case
-// Time: O(v)
-// Space: O(v)
+// Time: O(e+v)
+// Space: O(v/2) в середньому під час виконання
 
 const breathFirstTraversal = (graph, start) => {
   // краще використовувати кастомну чергу ніж массив, тому що метод shift працює за O(n)

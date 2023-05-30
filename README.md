@@ -16,6 +16,7 @@
 - [Build graph using array](#build-graph-using-array)
 - [Has path unoriented](#has-path-unoriented)
 - [Connected components count](#connected-components-count)
+- [Largest component size](#largest-component-size)
 
 ##### Numbers
 
@@ -143,6 +144,30 @@ const connectedComponentsCount = (graph) => {
     if (explore(graph, node, visited) === true) {
       count++
     }
+  }
+  return count
+}
+```
+
+###### Largest component size
+
+```javascript
+const exploreSize = (graph, vertex, visited) => {
+  if (visited.has(vertex)) return 0
+  visited.add(vertex)
+  let count = 1
+  for (neighbour of graph[vertex]) {
+    count += exploreSize(graph, neighbour, visited)
+  }
+  return count
+}
+
+const largestComponentSize = (graph) => {
+  const visited = new Set()
+  let count = 0
+  for (let vertex in graph) {
+    const result = exploreSize(graph, vertex, visited)
+    if (count < result) count = result
   }
   return count
 }

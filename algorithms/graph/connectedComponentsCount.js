@@ -15,8 +15,8 @@ const explore = (graph, vertex, visited) => {
 const connectedComponentsCount = (graph) => {
   let visited = new Set()
   let count = 0
-  for (let node in graph) {                        // проходимось по кожній вершині в об'єкті
-    if (explore(graph, node, visited) === true) {
+  for (let vertex in graph) {                        // проходимось по кожній вершині в об'єкті
+    if (explore(graph, vertex, visited) === true) {
       count++
     }
   }

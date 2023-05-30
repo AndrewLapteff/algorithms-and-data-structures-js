@@ -2,7 +2,7 @@
 
 // Ітеративний варіант
 // Worst case
-// Time: O(v)
+// Time: O(e+v)
 // Space: O(v)
 const depthFirstTraversal = (graph, source) => {
   const stack = [source]                      // ініціалізуємо стек початковим значенням
@@ -21,7 +21,7 @@ const depthFirstTraversal = (graph, source) => {
 
 // Рекурсивний варінт (вдвічі швидший)
 // Worst case
-// Time: O(v)
+// Time: O(e+v)
 // Space: O(v)
 const depthFirstTraversalRecursive = (graph, current) => {
   for (neighbour of graph[current]) {
