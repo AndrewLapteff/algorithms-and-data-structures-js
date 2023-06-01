@@ -17,6 +17,7 @@
 - [Has path unoriented](#has-path-unoriented)
 - [Connected components count](#connected-components-count)
 - [Largest component size](#largest-component-size)
+- [Island count](#island-count)
 
 ##### Numbers
 
@@ -168,6 +169,35 @@ const largestComponentSize = (graph) => {
   for (let vertex in graph) {
     const result = exploreSize(graph, vertex, visited)
     if (count < result) count = result
+  }
+  return count
+}
+```
+
+###### Island count
+
+```javascript
+const explore = (grid, row, col, visited) => {
+  const isRowInBounds = 0 <= row && row < grid.length
+  const isColInBounds = 0 <= col && col < grid[0].length
+  if (!isRowInBounds || !isColInBounds) return false
+  if (visited.has(row + ',' + col)) return false
+  visited.add(row + ',' + col)
+  if (grid[row][col] == 'W') return false
+  explore(grid, row - 1, col, visited)
+  explore(grid, row + 1, col, visited)
+  explore(grid, row, col - 1, visited)
+  explore(grid, row, col + 1, visited)
+  return true
+}
+
+const islandCount = (grid) => {
+  const visited = new Set()
+  let count = 0
+  for (let row = 0; row < grid.length; row++) {
+    for (let col = 0; col < grid[0].length; col++) {
+      count += explore(grid, row, col, visited)
+    }
   }
   return count
 }
