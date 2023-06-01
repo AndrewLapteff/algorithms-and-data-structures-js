@@ -18,6 +18,7 @@
 - [Connected components count](#connected-components-count)
 - [Largest component size](#largest-component-size)
 - [Island count](#island-count)
+- [Minimum island count](#minimum-island-count)
 
 ##### Numbers
 
@@ -35,7 +36,7 @@
 
 ```javascript
 const maxValue = (nums) => {
-  let maxVal = -1e7
+  let maxVal = -Infinity
   nums.forEach((num) => {
     maxVal = num > maxVal ? num : maxVal
   })
@@ -197,6 +198,38 @@ const islandCount = (grid) => {
   for (let row = 0; row < grid.length; row++) {
     for (let col = 0; col < grid[0].length; col++) {
       count += explore(grid, row, col, visited)
+    }
+  }
+  return count
+}
+```
+
+###### Minimum island count
+
+```javascript
+const explore = (grid, row, col, visited) => {
+  const isRowInBounds = 0 <= row && row < grid.length
+  const isColInBounds = 0 <= col && col < grid[0].length
+  if (!isRowInBounds || !isColInBounds) return 0 // перевірки на те чи не вийшли ми за межі
+  if (visited.has(row + ',' + col)) return 0
+  visited.add(row + ',' + col)
+  if (grid[row][col] == 'W') return 0
+  let count = 1
+  count += explore(grid, row - 1, col, visited) // вижче
+  count += explore(grid, row + 1, col, visited) // нижче
+  count += explore(grid, row, col - 1, visited) // лівіше
+  count += explore(grid, row, col + 1, visited) // правіше
+  return count
+}
+
+const mininumIslandCount = (grid) => {
+  const visited = new Set()
+  let count = Infinity
+  let result = 0
+  for (let row = 0; row < grid.length; row++) {
+    for (let col = 0; col < grid[0].length; col++) {
+      result = explore(grid, row, col, visited)
+      if (result < count && result != 0) count = result
     }
   }
   return count

@@ -2,7 +2,7 @@
 // Space O(1)
 
 const maxValue = (nums) => {
-  let maxVal = -1e7     // 10000000
+  let maxVal = -Infinity
   nums.forEach(num => {
     maxVal = num > maxVal ? num : maxVal
   })
