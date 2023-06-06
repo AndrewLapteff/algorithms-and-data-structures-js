@@ -20,6 +20,13 @@
 - [Island count](#island-count)
 - [Minimum island count](#minimum-island-count)
 
+##### Sortings
+
+- [Selection sort](#selection-sort)
+- [Bubble sort](#bubble-sort)
+- [Counting sort](#counting-sort)
+- [Quick sort](#quick-sort)
+
 ##### Numbers
 
 - [Is prime](#is-prime)
@@ -233,6 +240,78 @@ const mininumIslandCount = (grid) => {
     }
   }
   return count
+}
+```
+
+###### Selection sort
+
+```javascript
+const selectionSort = (arr) => {
+  let minIndex, temp
+  for (let i = 0; i < arr.length - 1; i++) {
+    minIndex = i
+    for (let j = i + 1; j < arr.length; j++) {
+      if (arr[j] < arr[minIndex]) minIndex = j
+    }
+    temp = arr[i]
+    arr[i] = arr[minIndex]
+    arr[minIndex] = temp
+  }
+  return arr
+}
+```
+
+###### Bubble sort
+
+```javascript
+const bubbleSort = (arr) => {
+  let swapped
+  for (let sorted = 0; sorted < arr.length - 1; sorted++) {
+    swapped = false
+    for (let current = 0; current < arr.length - sorted - 1; current++) {
+      if (arr[current] > arr[current + 1]) {
+        let temp = arr[current]
+        arr[current] = arr[current + 1]
+        arr[current + 1] = temp
+        swapped = true
+      }
+    }
+    if (!swapped) break
+  }
+  return arr
+}
+```
+
+###### Counting sort
+
+```javascript
+const countingSort = (input) => {
+  const counts = Array(Math.max(...input)).fill(0)
+  const output = []
+  for (elm of input) {
+    counts[elm] = 1
+  }
+  for (let i = 1; i < counts.length; i++) {
+    counts[i] = counts[i] + counts[i - 1]
+  }
+
+  for (let i = 0; i < input.length; i++) {
+    output[counts[input[i]] - 1] = input[i]
+    counts[input[i]]--
+  }
+  return output
+}
+```
+
+###### Quick sort
+
+```javascript
+const quickSort = (arr) => {
+  if (arr.length < 2) return arr
+  const pivot = arr[Math.floor(Math.random() * arr.length)]
+  const less = arr.filter((val) => val < pivot)
+  const greater = arr.filter((val) => val > pivot)
+  return [...simpleQuicksort(less), pivot, ...simpleQuicksort(greater)]
 }
 ```
 
