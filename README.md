@@ -26,6 +26,7 @@
 - [Bubble sort](#bubble-sort)
 - [Counting sort](#counting-sort)
 - [Quick sort](#quick-sort)
+- [Radix sort](#radix-sort)
 
 ##### Numbers
 
@@ -313,6 +314,43 @@ const quickSort = (arr) => {
   const less = arr.filter((val) => val < pivot)
   const greater = arr.filter((val) => val > pivot)
   return [...simpleQuicksort(less), pivot, ...simpleQuicksort(greater)]
+}
+```
+
+###### Radix sort
+
+```javascript
+const getRadix = (number, radixNumber, radixCount) => {
+  return number.toString().padStart(radixCount, '0').toString()[radixNumber]
+}
+
+const bucketSort = (input, radixNumber, radixCount) => {
+  let buckets = Array.from({ length: 10 })
+    .fill(0)
+    .map((el) => [])
+
+  for (let i = 0; i < input.length; i++) {
+    buckets[getRadix(input[i], radixNumber, radixCount)].push(input[i])
+  }
+
+  let index = 0
+  for (let i = 0; i < buckets.length; i++) {
+    for (let j = 0; j < buckets[i].length; j++) {
+      buckets[i].sort()
+      input[index] = buckets[i][j]
+      index++
+    }
+  }
+}
+
+const radixSort = (array) => {
+  const radixCount = Math.max(...array).toString().length
+  let radixNumber = radixCount - 1
+  while (radixNumber >= 0) {
+    bucketSort(array, radixNumber, radixCount)
+    radixNumber--
+  }
+  return array
 }
 ```
 
