@@ -28,6 +28,10 @@
 - [Quick sort](#quick-sort)
 - [Radix sort](#radix-sort)
 
+##### Searches
+
+- [Binary search](#binary-search)
+
 ##### Numbers
 
 - [Is prime](#is-prime)
@@ -35,7 +39,8 @@
 ## Data structures
 
 - [Queue](#queue)
-- [Linked List](#linked-list)
+- [Linked list](#linked-list)
+- [Binary tree](#binary-tree)
 
 #### Algorithms code
 
@@ -354,6 +359,26 @@ const radixSort = (array) => {
 }
 ```
 
+###### Binary search
+
+```javascript
+const binarySearch = (arr, target) => {
+  let left = 0
+  let right = arr.length - 1
+  let mid = 0
+  while (left <= right) {
+    mid = Math.round((right + left) / 2)
+    if (target == arr[mid]) return mid
+    if (target < arr[mid]) {
+      right = mid - 1
+    } else {
+      left = mid + 1
+    }
+  }
+  return -1
+}
+```
+
 ###### Is prime
 
 ```javascript
@@ -396,7 +421,7 @@ class Queue {
 }
 ```
 
-###### Linked List
+###### Linked list
 
 ```javascript
 class Node {
@@ -463,6 +488,193 @@ class LinkedList {
       current = current.next
     }
     return current.value == value ? true : false
+  }
+}
+```
+
+###### Binary tree
+
+```javascript
+class Node {
+  left = null
+  right = null
+  parent = null
+  constructor(value) {
+    this.value = value
+  }
+}
+
+class BinaryTree {
+  root = null
+
+  add(value) {
+    if (!this.root) {
+      this.root = new Node(value)
+      return
+    }
+
+    let current = this.root
+    let parent = null
+    while (true) {
+      parent = current
+      if (value < current.value) {
+        if (current.left == null) {
+          current.left = new Node(value)
+          current.left.parent = parent
+          return
+        }
+        current = current.left
+      }
+      parent = current
+      if (value > current.value) {
+        if (current.right == null) {
+          current.right = new Node(value)
+          current.right.parent = parent
+          return
+        }
+        current = current.right
+      }
+    }
+  }
+
+  remove(value) {
+    if (!this.root) {
+      console.log('Tree is empty')
+      return
+    }
+
+    if (value == this.root.value) {
+      let predecessor = this.predecessor(this.root.value)
+      this.root.value = predecessor.value
+      if (predecessor.parent.left === predecessor)
+        predecessor.parent.left = null
+      if (predecessor.parent.right === predecessor)
+        predecessor.parent.right = null
+      return
+    }
+
+    const current = this._find(value)
+    if (current.value != value) return
+
+    if (current.left == null && current.right == null) {
+      if (current.parent.left == current) current.parent.left = null
+      if (current.parent.right == current) current.parent.right = null
+    } else if (current.left != null && current.right != null) {
+      const predecessor = this.predecessor(value)
+      if (predecessor.parent.left == predecessor) predecessor.parent.left = null
+      if (predecessor.parent.right == predecessor)
+        predecessor.parent.right = null
+      if (current.parent.left == current) {
+        predecessor.parent = current.parent
+        current.parent.left = predecessor
+        if (current.left != null) {
+          predecessor.left = current.left
+          current.left.parent = predecessor
+        }
+        if (current.right != null) {
+          predecessor.right = current.right
+          current.right.parent = predecessor
+        }
+      }
+      if (current.parent.right == current) {
+        predecessor.parent = current.parent
+        current.parent.right = predecessor
+        if (current.left != null) {
+          predecessor.left = current.left
+          current.left.parent = predecessor
+        }
+        if (current.right != null) {
+          predecessor.right = current.right
+          current.right.parent = predecessor
+        }
+      }
+    }
+    if (current.left != null && current.right == null) {
+      if (current.parent.left === current) {
+        current.parent.left = current.left
+        current.left.parent = current.parent
+      }
+      if (current.parent.right === current) {
+        current.parent.right = current.left
+        current.right.parent = current.parent
+      }
+    }
+    if (current.left == null && current.right != null) {
+      if (current.parent.left === current) {
+        current.parent.left = current.right
+        current.left.parent = current.parent
+      }
+      if (current.parent.right === current) {
+        current.parent.right = current.right
+        current.right.parent = current.parent
+      }
+    }
+  }
+
+  preorderTraversal() {
+    this._preorderTraversal(this.root)
+  }
+
+  _preorderTraversal(node) {
+    if (node != null) {
+      this._preorderTraversal(node.left)
+      console.log(node.value)
+      this._preorderTraversal(node.right)
+    }
+  }
+
+  postorderTraversal() {
+    this._postorderTraversal(this.root)
+  }
+
+  _postorderTraversal(node) {
+    if (node != null) {
+      this._postorderTraversal(node.right)
+      console.log(node.value)
+      this._postorderTraversal(node.left)
+    }
+  }
+
+  predecessor(target) {
+    if (this.root == null) {
+      console.log('Tree is empty')
+      return
+    }
+    let current = this._find(target)
+    if (current.left != null) {
+      let left = current.left
+      while (left.right != null) left = left.right
+      return left
+    }
+  }
+
+  successor(target) {
+    if (this.root == null) {
+      console.log('Tree is empty')
+      return
+    }
+    let current = this._find(target)
+    if (current.right != null) {
+      let right = current.left
+      while (right.left != null) right = right.left
+      console.log('Successor:', right.value)
+    }
+  }
+
+  _find(target) {
+    let current = this.root
+    while (current !== null) {
+      if (current.value === target) {
+        break
+      } else if (current.value < target && current.right !== null) {
+        current = current.right
+      } else if (current.value > target && current.left !== null) {
+        current = current.left
+      } else {
+        break
+      }
+    }
+    return current
   }
 }
 ```
