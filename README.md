@@ -8,6 +8,10 @@
 
 - [Max value](#max-value-of-array)
 
+##### Functions
+
+- [Throttle](#throttle)
+
 ##### Graphs
 
 - [Breath first traversal](#breath-first-traversal)
@@ -388,6 +392,35 @@ const isPrime = (n) => {
     if (n % i === 0) return false
   }
   return true
+}
+```
+
+###### Throttle
+
+```javascript
+const throttle = (callback, delay = 1000) => {
+  let isThrottled = false
+  let savedThis, savedArgs
+
+  function anonimous() {
+    if (isThrottled) {
+      savedArgs = arguments
+      savedThis = this
+      return
+    }
+
+    callback.apply(this, arguments)
+    isThrottled = true
+
+    setTimeout(() => {
+      isThrottled = false
+      if (savedArgs) {
+        anonimous.apply(savedThis, savedArgs)
+        savedArgs = savedThis = null
+      }
+    }, delay)
+  }
+  return anonimous
 }
 ```
 
