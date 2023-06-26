@@ -11,6 +11,7 @@
 ##### Functions
 
 - [Throttle](#throttle)
+- [Debounce](#debounce)
 
 ##### Graphs
 
@@ -421,6 +422,20 @@ const throttle = (callback, delay = 1000) => {
     }, delay)
   }
   return anonimous
+}
+```
+
+###### Debounce
+
+```javascript
+const debounce = (callback, delay) => {
+  let timer = null
+  return function anonimousFn(...args) {
+    clearTimeout(timer)
+    timer = setTimeout(() => {
+      callback(...args)
+    }, delay)
+  }
 }
 ```
 
