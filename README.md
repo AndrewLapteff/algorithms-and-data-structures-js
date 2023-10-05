@@ -8,10 +8,11 @@
 
 - [Max value](#max-value-of-array)
 
-##### Functions
+##### Utilities
 
 - [Throttle](#throttle)
 - [Debounce](#debounce)
+- [Curry](#curry)
 
 ##### Graphs
 
@@ -40,6 +41,10 @@
 ##### Numbers
 
 - [Is prime](#is-prime)
+
+##### Other
+
+- Game of Life
 
 ## Data structures
 
@@ -435,6 +440,18 @@ const debounce = (callback, delay) => {
     timer = setTimeout(() => {
       callback(...args)
     }, delay)
+  }
+}
+```
+
+###### Curry
+
+```javascript
+function curry(func) {
+  return function (a) {
+    return function (b) {
+      return func(a, b)
+    }
   }
 }
 ```
