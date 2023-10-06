@@ -13,6 +13,7 @@
 - [Throttle](#throttle)
 - [Debounce](#debounce)
 - [Curry](#curry)
+- [Cache](#cache)
 
 ##### Graphs
 
@@ -454,6 +455,20 @@ function curry(func) {
     }
   }
 }
+```
+
+###### Cache
+
+```javascript
+function cache (func) {
+  const cache = new Map()
+  return function(x){
+    if (cache.has(x)) return cache.get(x)
+    const result = func.call(this, x)
+    cache.set(x, result)
+    return result
+  }
+} 
 ```
 
 ###### Queue
