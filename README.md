@@ -46,6 +46,7 @@
 ##### Other
 
 - Game of Life
+- Knapsack problem
 
 ## Data structures
 
@@ -460,15 +461,60 @@ function curry(func) {
 ###### Cache
 
 ```javascript
-function cache (func) {
+function cache(func) {
   const cache = new Map()
-  return function(x){
+  return function (x) {
     if (cache.has(x)) return cache.get(x)
     const result = func.call(this, x)
     cache.set(x, result)
     return result
   }
-} 
+}
+```
+
+###### Knapsack problem
+
+```javascript
+function knapsackProblem(values, weights, capacity) {
+  const n = values.length
+  const dp = new Array(capacity + 1).fill(0)
+  const selectedItems = new Array(n).fill(0)
+
+  for (let w = 0; w <= capacity; w++) {
+    for (let i = 0; i < n; i++) {
+      if (weights[i] <= w) {
+        const newValue = dp[w - weights[i]] + values[i]
+        if (newValue > dp[w]) {
+          dp[w] = newValue
+          selectedItems[w] = i
+        }
+      }
+    }
+  }
+
+  const selected = []
+  let w = capacity
+  while (w > 0) {
+    const selectedItem = selectedItems[w]
+    if (selectedItem >= 0) {
+      selected.push(selectedItem)
+      w -= weights[selectedItem]
+    } else {
+      break
+    }
+  }
+
+  return {
+    maxValue: dp[capacity],
+    selectedItems: selected.reverse(),
+  }
+}
+
+const values = [1, 6, 4, 7, 6]
+const weights = [3, 4, 5, 8, 9]
+const capacity = 13
+
+const maxTotalValue = knapsackProblem(values, weights, capacity)
 ```
 
 ###### Queue

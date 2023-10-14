@@ -1,6 +1,6 @@
-const Queue = require("../../data_structures/queue")
+const Queue = require('../../data_structures/queue')
 
-// BFS (breath first traversal) - обхід хвилями, спочатку обходимо всих сусідів, 
+// BFS (breath first traversal) - обхід хвилями, спочатку обходимо всих сусідів,
 // тоді їх сусідів і так далі (використовуємо Queue)
 
 // Worst case
@@ -10,11 +10,11 @@ const Queue = require("../../data_structures/queue")
 const breathFirstTraversal = (graph, start) => {
   // краще використовувати кастомну чергу ніж массив, тому що метод shift працює за O(n)
   const queue = new Queue()
-  queue.enqueue(start)                        // ініціалізація
+  queue.enqueue(start) // ініціалізація
   while (!queue.isEmpty()) {
-    const current = queue.dequeue()           // отримуємо перший елемент черги
+    const current = queue.dequeue() // отримуємо перший елемент черги
     for (let neighbour of graph[current]) {
-      queue.enqueue(neighbour)                // поміщаємо в кінець черги
+      queue.enqueue(neighbour) // поміщаємо в кінець черги
     }
   }
 }
@@ -26,7 +26,7 @@ const graph = {
   d: ['f'],
   e: [],
   f: [],
-  g: []
+  g: [],
 }
 
 breathFirstTraversal(graph, 'a', 'd')

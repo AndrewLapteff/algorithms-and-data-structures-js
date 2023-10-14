@@ -1,34 +1,47 @@
-// //www.youtube.com/watch?v=wcjqBf2qRe0
+function knapsackProblem(values, weights, capacity) {
+  const n = values.length // кількість доступних предметів
+  const dp = new Array(capacity + 1).fill(0) // масив для збереження максимальної вартості для кожної вмістимості
+  const selectedItems = new Array(n).fill(0) // масив для відстеження вибраних предметів
 
-// function knapsackUnlimitedCapacity(values, weights, capacity) {
-//   const n = values.length // Кількість доступних предметів
-//   const dp = new Array(capacity + 1).fill(0) // Масив для збереження максимальної вартості для кожної вмістимості
+  // проходимось по всіх можливих вмістимостях рюкзака
+  for (let w = 0; w <= capacity; w++) {
+    // проходимось по всіх предметах
+    for (let i = 0; i < n; i++) {
+      // перевіряємо, чи можна додати поточний предмет у рюкзак з вмістимістю 'w'
+      if (weights[i] <= w) {
+        // оновлюємо максимальну вартість
+        const newValue = dp[w - weights[i]] + values[i] // ціна до додавання поточного елемента + ціна цього елемента
+        if (newValue > dp[w]) {
+          dp[w] = newValue
+          selectedItems[w] = i
+        }
+      }
+    }
+  }
 
-//   // Проходимось по всіх можливих вмістимостях рюкзака
-//   for (let w = 0; w <= capacity; w++) {
-//     // Проходимось по всіх предметах
-//     for (let i = 0; i < n; i++) {
-//       // Перевіряємо, чи можна додати поточний предмет у рюкзак з вмістимістю 'w'
-//       if (weights[i] <= w) {
-//         // Оновлюємо максимальну вартість, вибираючи максимум між поточим значенням та значенням,
-//         // яке можна отримати, вибравши поточний предмет і зменшивши вмістимість на вагу предмета
-//         dp[w] = Math.max(dp[w], dp[w - weights[i]] + values[i])
-//         // Рядок dp[w] = Math.max(dp[w], dp[w - weights[i]] + values[i]) в коді вище використовується для оновлення значення максимальної вартості для конкретної вмістимості рюкзака.
-//         // Ось розподіл кожного компонента в цьому виразі:
-//         // dp[w]: Це є поточне найкраще (максимальне) значення вартості для вмістимості w рюкзака. dp - це масив, в якому зберігаються результати для різних вмістимостей рюкзака.
-//         // Math.max(dp[w], ...): Ця частина визначає максимальне значення між поточним найкращим значенням dp[w] і новим значенням, яке можливо отримати, вибравши поточний предмет i і зменшивши вмістимість рюкзака на вагу предмета weights[i]. Ідея полягає в тому, що ми перевіряємо, чи буде вигідніше додати поточний предмет до рюкзака чи залишити його.
-//         // dp[w - weights[i]] + values[i]: Ця частина обчислює, яку вартість ми отримаємо, додавши поточний предмет i до рюкзака. dp[w - weights[i]] представляє найкращу вартість, яку можна було б отримати до додавання поточного предмета, і ми додаємо до неї вартість values[i] поточного предмета, щоб знайти нову вартість.
-//         // Отже, вираз dp[w] = Math.max(dp[w], dp[w - weights[i]] + values[i]) допомагає нам визначити, чи варто додавати поточний предмет до рюкзака для досягнення максимальної вартості. Ми обираємо максимум між поточним найкращим значенням dp[w] і новим значенням, яке отримаємо, якщо додамо поточний предмет до рюкзака.
-//       }
-//     }
-//   }
+  // відновлення вибраних предметів
+  const selected = []
+  let w = capacity
+  while (w > 0) {
+    const selectedItem = selectedItems[w]
+    if (selectedItem >= 0) {
+      selected.push(selectedItem) // запам'ятовуємо цей елемент
+      w -= weights[selectedItem] // відкатуємся до ваги рюкзака до додавання цього елмента
+    } else {
+      break
+    }
+  }
 
-//   return dp[capacity] // Повертаємо максимальну вартість рюкзака
-// }
+  return {
+    maxValue: dp[capacity],
+    selectedItems: selected.reverse(),
+  }
+}
 
-// const values = [40, 100, 120]
-// const weights = [10, 20, 30]
-// const capacity = 50
+const values = [1, 6, 4, 7, 6]
+const weights = [3, 4, 5, 8, 9]
+const capacity = 13
 
-// const maxTotalValue = knapsackUnlimitedCapacity(values, weights, capacity)
-// console.log('Максимальна вартість: ' + maxTotalValue)
+const maxTotalValue = knapsackProblem(values, weights, capacity)
+console.log('Максимальна вартість: ' + maxTotalValue.maxValue)
+console.log('Елементи: ' + maxTotalValue.selectedItems)
