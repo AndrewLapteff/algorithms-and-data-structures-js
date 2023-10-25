@@ -29,7 +29,7 @@
 
 ##### Greedy algorithms
 
-- [Minimize max lateness](#)
+- [Minimize max lateness](#minimize-max-lateness)
 
 ##### Sortings
 
@@ -42,6 +42,10 @@
 ##### Searches
 
 - [Binary search](#binary-search)
+
+##### Coding
+
+- [Huffman coding](#huffman-coding)
 
 ##### Numbers
 
@@ -421,6 +425,83 @@ const binarySearch = (arr, target) => {
     }
   }
   return -1
+}
+```
+
+###### Huffman coding
+
+```javascript
+class Node {
+  constructor(char, frequency) {
+    this.char = char
+    this.frequency = frequency
+    this.left = null
+    this.right = null
+  }
+}
+
+function buildTree(text) {
+  const frequencyTable = {}
+  for (const char of text) {
+    if (char in frequencyTable) {
+      frequencyTable[char]++
+    } else {
+      frequencyTable[char] = 1
+    }
+  }
+
+  const nodes = []
+  for (const char in frequencyTable) {
+    const node = new Node(char, frequencyTable[char])
+    nodes.push(node)
+  }
+
+  while (nodes.length > 1) {
+    nodes.sort((a, b) => b.frequency - a.frequency)
+    const left = nodes.pop()
+    const right = nodes.pop()
+    const parent = new Node(null, left.frequency + right.frequency)
+    parent.left = left
+    parent.right = right
+    nodes.push(parent)
+  }
+
+  return nodes[0]
+}
+
+function buildCodes(node, prefix = '', codes = {}) {
+  if (node) {
+    if (!node.left && !node.right) {
+      codes[node.char] = prefix
+    }
+    buildCodes(node.left, prefix + '0', codes)
+    buildCodes(node.right, prefix + '1', codes)
+  }
+}
+
+function encode(text, codes) {
+  let encoded = ''
+  for (const char of text) {
+    encoded += codes[char]
+  }
+  return encoded
+}
+
+function decode(encoded, root) {
+  let decoded = ''
+  let currentNode = root
+  for (const bit of encoded) {
+    if (bit === '0') {
+      currentNode = currentNode.left
+    } else {
+      currentNode = currentNode.right
+    }
+    if (!currentNode.left && !currentNode.right) {
+      decoded += currentNode.char
+      currentNode = root
+    }
+  }
+  return decoded
 }
 ```
 
