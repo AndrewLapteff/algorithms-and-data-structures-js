@@ -54,7 +54,8 @@
 ##### Other
 
 - Game of Life
-- Knapsack problem
+- [Knapsack problem](#knapsack-problem)
+- [Simple moving averange](#simple-moving-average)
 
 ## Data structures
 
@@ -63,8 +64,6 @@
 - [Binary tree](#binary-tree)
 
 #### Algorithms code
-
-######
 
 ###### Max value of array
 
@@ -629,6 +628,29 @@ const weights = [3, 4, 5, 8, 9]
 const capacity = 13
 
 const maxTotalValue = knapsackProblem(values, weights, capacity)
+```
+
+###### Simple moving average
+
+```javascript
+function simpleMovingAverage(data, n) {
+  if (n > data.length) return -1
+  let result = 0
+  let resultsArr = []
+
+  for (let idx = n; idx < data.length + 1; idx++) {
+    let elements = data.slice(idx - n, idx)
+
+    elements.forEach((el) => {
+      result += el
+    })
+
+    resultsArr.push(result / n)
+    result = 0
+  }
+
+  return resultsArr
+}
 ```
 
 ###### Queue
