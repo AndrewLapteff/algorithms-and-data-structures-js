@@ -47,6 +47,12 @@
 
 - [Binary search](#binary-search)
 
+##### Image
+
+- [Binary](#binary)
+- [Grayscale](#grayscale)
+- [Negative](#negative)
+
 ##### Coding
 
 - [Huffman coding](#huffman-coding)
@@ -593,6 +599,96 @@ const binarySearch = (arr, target) => {
 }
 ```
 
+###### Binary
+
+```javascript
+function binaryImage(imageData, ctx, canvas, threshold) {
+  const data = imageData.data
+
+  for (let i = 0; i < data.length; i += 4) {
+    const red = data[i]
+    const green = data[i + 1]
+    const blue = data[i + 2]
+
+    const grayscale = (red + green + blue) / 3
+
+    data[i] = grayscale
+    data[i + 1] = grayscale
+    data[i + 2] = grayscale
+  }
+
+  for (let i = 0; i < data.length; i += 4) {
+    const grayscale = data[i]
+    if (grayscale > threshold * 255) {
+      data[i] = 255
+      data[i + 1] = 255
+      data[i + 2] = 255
+    } else {
+      data[i] = 0
+      data[i + 1] = 0
+      data[i + 2] = 0
+    }
+  }
+
+  ctx.putImageData(imageData, 0, 0)
+
+  const binaryImage = new Image()
+  binaryImage.src = canvas.toDataURL()
+  document.body.appendChild(binaryImage)
+}
+```
+
+###### Negative
+
+```javascript
+function negative(imageData, ctx, canvas) {
+  for (let i = 0; i < imageData.height; i++) {
+    for (let j = 0; j < imageData.width; j++) {
+      let x = i * 4 * imageData.width + j * 4
+
+      let avg =
+        255 -
+        (imageData.data[x] + imageData.data[x + 1] + imageData.data[x + 2] / 3)
+
+      imageData.data[x] = avg
+      imageData.data[x + 1] = avg
+      imageData.data[x + 2] = avg
+    }
+  }
+
+  ctx.putImageData(imageData, 0, 0)
+
+  const binaryImage = new Image()
+  binaryImage.src = canvas.toDataURL()
+  document.body.appendChild(binaryImage)
+}
+```
+
+###### Grayscale
+
+```javascript
+function grayscale(imageData, ctx, canvas) {
+  for (let i = 0; i < imageData.height; i++) {
+    for (let j = 0; j < imageData.width; j++) {
+      let x = i * 4 * imageData.width + j * 4
+
+      let avg =
+        imageData.data[x] + imageData.data[x + 1] + imageData.data[x + 2] / 3
+
+      imageData.data[x] = avg
+      imageData.data[x + 1] = avg
+      imageData.data[x + 2] = avg
+    }
+  }
+
+  ctx.putImageData(imageData, 0, 0)
+
+  const binaryImage = new Image()
+  binaryImage.src = canvas.toDataURL()
+  document.body.appendChild(binaryImage)
+}
+```
+
 ###### Huffman coding
 
 ```javascript
@@ -1105,4 +1201,8 @@ class BinaryTree {
     return current
   }
 }
+```
+
+```
+
 ```
