@@ -61,6 +61,10 @@
 
 - [Is prime](#is-prime)
 
+##### Text
+
+- [Jaccard similarity](#jaccard-similarity)
+
 ##### Other
 
 - Game of Life
@@ -72,6 +76,13 @@
 - [Queue](#queue)
 - [Linked list](#linked-list)
 - [Binary tree](#binary-tree)
+
+#### BFS vs DFS
+
+- **Data Structure**: BFS uses a queue, whearas DFS uses a stack
+- **Speed**: BFS is slow as compared to DFS.
+- **Memory**: BFS requires more memory.
+- **When to use?**: When the target is close to the source, BFS performs better. When the target is far from the source, DFS is preferable.
 
 #### Algorithms code
 
@@ -646,9 +657,7 @@ function negative(imageData, ctx, canvas) {
     for (let j = 0; j < imageData.width; j++) {
       let x = i * 4 * imageData.width + j * 4
 
-      let avg =
-        255 -
-        (imageData.data[x] + imageData.data[x + 1] + imageData.data[x + 2] / 3)
+      let avg = 255 - (imageData.data[x] + imageData.data[x + 1] + imageData.data[x + 2] / 3)
 
       imageData.data[x] = avg
       imageData.data[x + 1] = avg
@@ -672,8 +681,7 @@ function grayscale(imageData, ctx, canvas) {
     for (let j = 0; j < imageData.width; j++) {
       let x = i * 4 * imageData.width + j * 4
 
-      let avg =
-        imageData.data[x] + imageData.data[x + 1] + imageData.data[x + 2] / 3
+      let avg = imageData.data[x] + imageData.data[x + 1] + imageData.data[x + 2] / 3
 
       imageData.data[x] = avg
       imageData.data[x + 1] = avg
@@ -915,6 +923,18 @@ function simpleMovingAverage(data, n) {
 }
 ```
 
+###### Jaccard similarity
+
+```javascript
+function jaccardSimilarity(text1, text2) {
+  const words1 = text1.split(/\s+/)
+  const words2 = text2.split(/\s+/)
+  const intersection = words1.filter((word) => words2.includes(word))
+  const union = [...new Set([...words1, ...words2])]
+  return intersection.length / union.length
+}
+```
+
 ###### Queue
 
 ```javascript
@@ -1070,10 +1090,8 @@ class BinaryTree {
     if (value == this.root.value) {
       let predecessor = this.predecessor(this.root.value)
       this.root.value = predecessor.value
-      if (predecessor.parent.left === predecessor)
-        predecessor.parent.left = null
-      if (predecessor.parent.right === predecessor)
-        predecessor.parent.right = null
+      if (predecessor.parent.left === predecessor) predecessor.parent.left = null
+      if (predecessor.parent.right === predecessor) predecessor.parent.right = null
       return
     }
 
@@ -1086,8 +1104,7 @@ class BinaryTree {
     } else if (current.left != null && current.right != null) {
       const predecessor = this.predecessor(value)
       if (predecessor.parent.left == predecessor) predecessor.parent.left = null
-      if (predecessor.parent.right == predecessor)
-        predecessor.parent.right = null
+      if (predecessor.parent.right == predecessor) predecessor.parent.right = null
       if (current.parent.left == current) {
         predecessor.parent = current.parent
         current.parent.left = predecessor
