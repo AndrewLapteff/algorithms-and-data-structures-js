@@ -6,7 +6,7 @@ const debounce = (callback, delay) => {
   return function anonimousFn(...args) {
     clearTimeout(timer)    // кожен раз виконується ця сама функція, і вона ж удаляє попередній таймер
     timer = setTimeout(() => {
-      callback(...args)
+      callback.apply(this, args)
     }, delay)
   }
 }
